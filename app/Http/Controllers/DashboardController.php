@@ -16,4 +16,9 @@ class DashboardController extends Controller
 
         return view('dashboard.index',compact('data'));
     }
+
+    public function charts()
+    {
+        return view('charts.index');
+    }
 }
