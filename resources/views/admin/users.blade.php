@@ -21,7 +21,12 @@
     @endif
 
     <div class="card shadow border-0 rounded-4 p-4">
-        <h5 class="fw-bold mb-3">Daftar Pengguna GSC Risk</h5>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold m-0">Daftar Pengguna GSC Risk</h5>
+            <button class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm" onclick="openAddUserModal()">
+                <i class="fa-solid fa-plus"></i> Tambah Pengguna
+            </button>
+        </div>
         <div class="table-responsive">
             <table class="table table-hover align-middle">
                 <thead class="table-light">
@@ -105,8 +110,53 @@
     </div>
 </div>
 
+<!-- Modal Tambah User -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="addUserModalLabel">👥 Tambah Pengguna Baru</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('admin.users.store') }}" method="POST">
+                @csrf
+                <div class="modal-body py-3">
+                    <div class="mb-3">
+                        <label for="add_name" class="form-label small fw-semibold text-muted">Nama Lengkap</label>
+                        <input type="text" class="form-control rounded-3" id="add_name" name="name" required placeholder="Nama lengkap pengguna...">
+                    </div>
+                    <div class="mb-3">
+                        <label for="add_email" class="form-label small fw-semibold text-muted">Alamat Email</label>
+                        <input type="email" class="form-control rounded-3" id="add_email" name="email" required placeholder="Email pengguna...">
+                    </div>
+                    <div class="mb-3">
+                        <label for="add_password" class="form-label small fw-semibold text-muted">Kata Sandi (Min. 8 karakter)</label>
+                        <input type="password" class="form-control rounded-3" id="add_password" name="password" required placeholder="Kata sandi...">
+                    </div>
+                    <div class="mb-3">
+                        <label for="add_role" class="form-label small fw-semibold text-muted">Peran (Role)</label>
+                        <select class="form-select rounded-3" id="add_role" name="role" required>
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4">Tambah Pengguna</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    function openAddUserModal() {
+        const addModal = new bootstrap.Modal(document.getElementById('addUserModal'));
+        addModal.show();
+    }
+
     function openEditUserModal(id, name, email, role) {
         const form = document.getElementById('editUserForm');
         form.action = `/admin/users/${id}`;

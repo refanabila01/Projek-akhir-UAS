@@ -1,12 +1,13 @@
 <?php
-
+ 
 namespace App\Http\Controllers;
-
+ 
 use App\Models\Favorite;
 use App\Models\Country;
 use App\Services\RiskScoringService;
 use App\Services\ExternalApiService;
-
+use Illuminate\Http\Request;
+ 
 class FavoriteController extends Controller
 {
     protected $scoringService;
@@ -61,5 +62,34 @@ class FavoriteController extends Controller
         }
 
         return view('watchlist.index', compact('watchlistData'));
+    }
+
+    public function toggle(Request $request)
+    {
+        $request->validate([
+            'country_id' => 'required|exists:countries,id'
+        ]);
+
+        $userId = auth()->id();
+        $countryId = $request->input('country_id');
+
+        $fav = Favorite::where('user_id', $userId)->where('country_id', $countryId)->first();
+
+        if ($fav) {
+            $fav->delete();
+            return response()->json([
+                'status' => 'removed',
+                'message' => 'Negara dihapus dari daftar pantau!'
+            ]);
+        } else {
+            Favorite::create([
+                'user_id' => $userId,
+                'country_id' => $countryId
+            ]);
+            return response()->json([
+                'status' => 'added',
+                'message' => 'Negara ditambahkan ke daftar pantau!'
+            ]);
+        }
     }
 }

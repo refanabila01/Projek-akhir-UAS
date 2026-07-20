@@ -56,7 +56,7 @@
                             <td>{{ number_format($port->latitude, 4) }}, {{ number_format($port->longitude, 4) }}</td>
                             <td>
                                 <span class="badge {{ $port->congestion_status === 'High' ? 'bg-danger' : ($port->congestion_status === 'Medium' ? 'bg-warning text-dark' : 'bg-success') }}">
-                                    {{ $port->congestion_status }}
+                                    {{ $port->congestion_status === 'High' ? 'Tinggi' : ($port->congestion_status === 'Medium' ? 'Sedang' : 'Rendah') }}
                                 </span>
                             </td>
                             <td class="text-center" style="white-space: nowrap;">

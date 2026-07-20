@@ -9,6 +9,7 @@
     $inflationScore = $latestScore ? $latestScore->inflation_score : 30;
     $currencyScore = $latestScore ? $latestScore->currency_score : 20;
     $newsScore = $latestScore ? $latestScore->news_score : 50;
+    $isFavorited = auth()->check() && \App\Models\Favorite::where('user_id', auth()->id())->where('country_id', $country->id)->exists();
 
     $riskLevel = $score >= 70 ? 'High Risk' : ($score >= 40 ? 'Medium Risk' : 'Low Risk');
     $badgeClass = $score >= 70 ? 'bg-danger text-white' : ($score >= 40 ? 'bg-warning text-dark' : 'bg-success text-white');
@@ -50,7 +51,7 @@
                 <div class="text-muted mt-1">
                     <span class="fw-semibold">{{ $country->code }}</span> • {{ $country->region }}
                     <button class="btn btn-sm btn-link text-warning p-0 ms-2" id="watchlistBtn" data-id="{{ $country->id }}">
-                        <i class="fa-regular fa-star fs-5"></i>
+                        <i class="{{ $isFavorited ? 'fa-solid fa-star' : 'fa-regular fa-star' }} fs-5" style="{{ $isFavorited ? 'color: #ffc107;' : '' }}"></i>
                     </button>
                 </div>
             </div>
@@ -120,7 +121,7 @@
         <!-- Risk Score Card -->
         <div class="col mb-3">
             <div class="card shadow-sm border-0 rounded-4 p-4 h-100">
-                <h6 class="text-muted fw-semibold small">Risk Score <i class="fa-solid fa-circle-info text-muted cursor-pointer" title="Skor Risiko Gabungan"></i></h6>
+                <h6 class="text-muted fw-semibold small">Skor Risiko <i class="fa-solid fa-circle-info text-muted cursor-pointer" title="Skor Risiko Gabungan"></i></h6>
                 <h3 class="fw-bold mt-2 {{ $textColor }}">{{ $score }}</h3>
                 <span class="badge {{ $badgeClass }} rounded-pill px-3 py-1 fs-7 d-inline-block mt-1">{{ $riskLevel }}</span>
             </div>
@@ -300,23 +301,32 @@ document.addEventListener("DOMContentLoaded", function () {
     // Watchlist Favorite toggle AJAX handler
     const watchlistBtn = document.getElementById('watchlistBtn');
     if (watchlistBtn) {
-        // Cek status awal (kita bisa kueri DB atau mock. Karena user-watchlist disimpan, kita cek AJAX)
         watchlistBtn.addEventListener('click', function() {
             const countryId = this.getAttribute('data-id');
             const icon = this.querySelector('i');
             
-            // Simulasikan atau kirim POST request ke /watchlist/toggle
-            if (icon.classList.contains('fa-regular')) {
-                icon.classList.remove('fa-regular');
-                icon.classList.add('fa-solid');
-                icon.style.color = '#ffc107';
-                alert('Negara ditambahkan ke daftar pantau Anda!');
-            } else {
-                icon.classList.remove('fa-solid');
-                icon.classList.add('fa-regular');
-                icon.style.color = '';
-                alert('Negara dihapus dari daftar pantau Anda!');
-            }
+            fetch('/watchlist/toggle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ country_id: countryId })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'added') {
+                    icon.className = 'fa-solid fa-star fs-5';
+                    icon.style.color = '#ffc107';
+                } else if (data.status === 'removed') {
+                    icon.className = 'fa-regular fa-star fs-5';
+                    icon.style.color = '';
+                }
+            })
+            .catch(err => {
+                console.error("Gagal mengubah daftar pantau:", err);
+                alert("Gagal mengubah status daftar pantau.");
+            });
         });
     }
 });

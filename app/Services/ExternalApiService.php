@@ -154,7 +154,7 @@ class ExternalApiService
         // Return a robust default fallback if offline
         return [
             'USD' => 1.0,
-            'IDR' => 16200.0,
+            'IDR' => 17944.0,
             'CNY' => 7.25,
             'EUR' => 0.92,
             'SGD' => 1.34,

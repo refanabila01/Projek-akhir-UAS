@@ -12,51 +12,55 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.85) 100%), url('/images/login_background.png') no-repeat center center fixed;
+            background-size: cover;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 40px 20px;
             position: relative;
-            overflow: hidden;
+            overflow-y: auto;
         }
 
         /* Ambient Light Spheres */
         .ambient-sphere {
             position: absolute;
             border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.15;
+            filter: blur(100px);
+            opacity: 0.25;
             z-index: 1;
             pointer-events: none;
         }
         .sphere-1 {
-            width: 300px;
-            height: 300px;
+            width: 400px;
+            height: 400px;
             background: #3b82f6;
-            top: -50px;
-            left: -50px;
+            top: -100px;
+            left: -100px;
         }
         .sphere-2 {
-            width: 350px;
-            height: 350px;
+            width: 450px;
+            height: 450px;
             background: #6c63ff;
-            bottom: -80px;
-            right: -80px;
+            bottom: -150px;
+            right: -100px;
         }
 
         /* Glassmorphism Card */
         .login-card {
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-            padding: 40px;
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 28px;
+            box-shadow: 0 24px 50px rgba(0, 0, 0, 0.3);
+            padding: 45px 35px;
             width: 100%;
-            max-width: 440px;
+            max-width: 450px;
             z-index: 10;
             position: relative;
+            transition: transform 0.3s ease;
         }
 
         .brand-header {
@@ -64,20 +68,30 @@
             margin-bottom: 30px;
         }
         .brand-logo {
-            font-size: 32px;
-            margin-bottom: 10px;
+            font-size: 40px;
+            margin-bottom: 12px;
             display: inline-block;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+            animation: float 3s ease-in-out infinite;
         }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        
         .brand-title {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 800;
             color: #0f172a;
             letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
         .brand-subtitle {
-            font-size: 12px;
-            color: #64748b;
-            margin-top: 4px;
+            font-size: 12.5px;
+            color: #475569;
+            margin-top: 6px;
+            font-weight: 500;
         }
 
         /* Form Inputs */
@@ -87,28 +101,32 @@
         }
         .input-group-custom i {
             position: absolute;
-            left: 16px;
+            left: 18px;
             top: 50%;
             transform: translateY(-50%);
-            color: #94a3b8;
-            font-size: 15px;
+            color: #64748b;
+            font-size: 16px;
             transition: color 0.2s;
         }
         .form-control-custom {
             width: 100%;
-            padding: 12px 16px 12px 46px;
-            border-radius: 12px;
-            border: 2px solid #e2e8f0;
-            font-size: 13.5px;
+            padding: 13px 18px 13px 50px;
+            border-radius: 14px;
+            border: 2px solid rgba(148, 163, 184, 0.25);
+            font-size: 14px;
             font-weight: 500;
-            color: #334155;
-            background: #fff;
-            transition: all 0.2s;
+            color: #1e293b;
+            background: rgba(255, 255, 255, 0.7);
+            transition: all 0.25s ease;
+        }
+        .form-control-custom::placeholder {
+            color: #94a3b8;
         }
         .form-control-custom:focus {
             outline: none;
             border-color: #3b82f6;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
         }
         .form-control-custom:focus + i {
             color: #3b82f6;
@@ -116,21 +134,21 @@
 
         /* Buttons */
         .btn-login {
-            background: #3b82f6;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
             color: #fff;
             border: none;
-            border-radius: 12px;
-            padding: 12px;
-            font-size: 14px;
+            border-radius: 14px;
+            padding: 14px;
+            font-size: 14.5px;
             font-weight: 700;
             width: 100%;
-            transition: all 0.2s;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            transition: all 0.25s ease;
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
         }
         .btn-login:hover {
-            background: #2563eb;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.45);
         }
         .btn-login:active {
             transform: translateY(0);
@@ -138,17 +156,17 @@
 
         /* Info Account Box for Demo */
         .demo-box {
-            background: #f8fafc;
-            border: 1px dashed #cbd5e1;
-            border-radius: 12px;
-            padding: 12px 14px;
+            background: rgba(248, 250, 252, 0.75);
+            border: 1px dashed rgba(148, 163, 184, 0.5);
+            border-radius: 14px;
+            padding: 14px;
             font-size: 11px;
             color: #475569;
             margin-top: 25px;
-            line-height: 1.5;
+            line-height: 1.6;
         }
         .demo-box b {
-            color: #1e293b;
+            color: #0f172a;
         }
     </style>
 </head>

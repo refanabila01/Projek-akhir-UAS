@@ -241,6 +241,84 @@
                                 Belum ada data berita. Silakan jalankan simulasi di Dashboard.
                             </div>
                         @endforelse
+
+                        {{-- Tambahkan kartu filler jika jumlah total genap ganjil --}}
+                        @php
+                            $newsCount = count($news);
+                            $isOdd = $newsCount % 2 !== 0;
+                        @endphp
+                        @if($isOdd && $newsCount > 0)
+                            @php
+                                $fillers = [
+                                    'Economy' => [
+                                        'title' => 'Global Supply Chain Inflation Rates Show Signals of Moderation in Q3',
+                                        'content' => 'A consensus of leading central banks indicates that supply chain pressure indexes are starting to ease, lowering wholesale import inflation rates across major trading ports.',
+                                        'source' => 'World Economic Forum',
+                                        'sentiment' => 'Positive',
+                                        'sentiment_label' => 'Positif'
+                                    ],
+                                    'Logistics' => [
+                                        'title' => 'Logistics Optimization Trends: Green Warehousing Drives Down Operating Costs',
+                                        'content' => 'Adopting energy-efficient automated storage and solar-powered cold chains allows global distributors to offset rising fuel prices and minimize route delays.',
+                                        'source' => 'Logistics Inside',
+                                        'sentiment' => 'Positive',
+                                        'sentiment_label' => 'Positif'
+                                    ],
+                                    'Trade' => [
+                                        'title' => 'New Bilateral Maritime Agreements Aim to Reduce Tariff Friction',
+                                        'content' => 'Bilateral trade pacts between major Asian hubs and European markets are set to eliminate bottlenecks and streamline custom clearance procedures next month.',
+                                        'source' => 'Global Trade Daily',
+                                        'sentiment' => 'Positive',
+                                        'sentiment_label' => 'Positif'
+                                    ],
+                                    'Shipping' => [
+                                        'title' => 'Maritime Freight Rates Steady as Vessel Capacity Increases',
+                                        'content' => 'The introduction of modern high-tonnage container vessels stabilizes global shipping spot rates, providing a predictable window for maritime operators.',
+                                        'source' => 'Shipping Gazette',
+                                        'sentiment' => 'Neutral',
+                                        'sentiment_label' => 'Netral'
+                                    ]
+                                ];
+
+                                $filler = $fillers[$category ?? 'Economy'] ?? $fillers['Economy'];
+                                $fillerImage = $fallbackImages[$category ?? 'Economy'] ?? $fallbackImages['Economy'];
+                            @endphp
+                            <div class="col-12 col-md-6 news-item">
+                                <a href="#" class="news-card-link">
+                                    <div class="card h-100 border-0 rounded-4 shadow-sm overflow-hidden news-card-item" style="background: #ffffff; border: 1px solid #f1f5f9 !important;">
+                                        <!-- Image Header -->
+                                        <div class="position-relative overflow-hidden" style="height: 140px;">
+                                            <img src="{{ $fillerImage }}" class="w-100 h-100 news-zoom-img" style="object-fit: cover; transition: transform 0.4s ease;" alt="Gambar Berita">
+                                            <span class="position-absolute top-0 start-0 m-2.5 badge {{ $filler['sentiment'] === 'Positive' ? 'bg-success' : 'bg-warning text-dark' }} px-2 py-1.5 rounded-pill shadow" style="font-size: 8px; font-weight: 700; letter-spacing: 0.5px; z-index: 10;">
+                                                Sentimen: {{ $filler['sentiment_label'] }}
+                                            </span>
+                                        </div>
+
+                                        <!-- Card Body -->
+                                        <div class="card-body p-3 d-flex flex-column justify-content-between" style="min-height: 180px;">
+                                            <div>
+                                                <small class="text-muted d-block mb-1.5" style="font-size: 10px; font-weight: 500;">
+                                                    <i class="fa-solid fa-clock me-1"></i>{{ now()->format('d M Y, H:i') }} WIB
+                                                </small>
+                                                <h6 class="fw-bold text-dark mb-1.5 news-title-hover" style="font-size: 12.5px; line-height: 1.4; height: 36px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                                                    {{ $filler['title'] }}
+                                                </h6>
+                                                <p class="text-secondary mb-3" style="font-size: 11px; line-height: 1.5; height: 50px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
+                                                    {{ $filler['content'] }}
+                                                </p>
+                                            </div>
+
+                                            <!-- Footer Info -->
+                                            <div class="d-flex justify-content-between align-items-center pt-2 border-top border-light" style="font-size: 10px;">
+                                                <span class="text-primary fw-bold">
+                                                    <i class="fa-solid fa-newspaper me-1"></i>{{ $filler['source'] }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        @endif
                     </div>
                 </div>
 

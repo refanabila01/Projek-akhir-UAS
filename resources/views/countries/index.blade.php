@@ -77,6 +77,7 @@
     };
     $exportsDisplay = $formatLargeNumber($selectedCountry->exports, 0.15);
     $importsDisplay = $formatLargeNumber($selectedCountry->imports, 0.12);
+    $isFavorited = auth()->check() && \App\Models\Favorite::where('user_id', auth()->id())->where('country_id', $selectedCountry->id)->exists();
 @endphp
 
 <style>
@@ -291,7 +292,7 @@
                     @endif
                     <button class="btn btn-sm btn-link text-warning p-0 ms-2 align-middle" id="watchlistBtn"
                             data-id="{{ $selectedCountry->id }}" style="font-size:18px; line-height:1;">
-                        <i class="fa-regular fa-star"></i>
+                        <i class="{{ $isFavorited ? 'fa-solid fa-star' : 'fa-regular fa-star' }}" style="{{ $isFavorited ? 'color: #ffc107;' : '' }}"></i>
                     </button>
                 </div>
             </div>
@@ -595,14 +596,31 @@ document.addEventListener("DOMContentLoaded", function () {
     const watchlistBtn = document.getElementById('watchlistBtn');
     if (watchlistBtn) {
         watchlistBtn.addEventListener('click', function() {
+            const countryId = this.getAttribute('data-id');
             const icon = this.querySelector('i');
-            if (icon.classList.contains('fa-regular')) {
-                icon.classList.replace('fa-regular', 'fa-solid');
-                icon.style.color = '#ffc107';
-            } else {
-                icon.classList.replace('fa-solid', 'fa-regular');
-                icon.style.color = '';
-            }
+            
+            fetch('/watchlist/toggle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ country_id: countryId })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'added') {
+                    icon.className = 'fa-solid fa-star';
+                    icon.style.color = '#ffc107';
+                } else if (data.status === 'removed') {
+                    icon.className = 'fa-regular fa-star';
+                    icon.style.color = '';
+                }
+            })
+            .catch(err => {
+                console.error("Gagal mengubah daftar pantau:", err);
+                alert("Gagal mengubah status daftar pantau.");
+            });
         });
     }
 });

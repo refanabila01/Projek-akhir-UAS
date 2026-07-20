@@ -142,7 +142,7 @@ href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
             </a>
 
             <a href="/risk-score" class="menu-item {{ request()->is('risk-score') ? 'active-menu' : '' }}">
-                ⚠ Risk Score
+                ⚠ Skor Risiko
             </a>
 
             <a href="/weather-monitoring" class="menu-item {{ request()->is('weather-monitoring') ? 'active-menu' : '' }}">
@@ -176,12 +176,12 @@ href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
             <!-- Panel Admin -->
             @if(auth()->check() && auth()->user()->role === 'admin')
                 <a href="/admin/dashboard" class="menu-item {{ request()->is('admin/dashboard') || request()->is('admin*') ? 'active-menu' : '' }}">
-                    🛡️ Admin Dashboard
+                    🛡️ Dasbor Admin
                 </a>
                 @if(request()->is('admin*'))
                     <div class="ps-3 d-flex flex-column gap-1">
                         <a href="/admin/users" class="menu-item {{ request()->is('admin/users') ? 'active-menu' : '' }}" style="font-size: 13px; margin-bottom: 4px;">
-                            👥 Kelola User
+                            👥 Kelola Pengguna
                         </a>
                         <a href="/admin/ports" class="menu-item {{ request()->is('admin/ports') ? 'active-menu' : '' }}" style="font-size: 13px; margin-bottom: 4px;">
                             🚢 Kelola Pelabuhan

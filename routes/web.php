@@ -73,11 +73,14 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/watchlist', [FavoriteController::class, 'index'])
         ->name('watchlist');
+    Route::post('/watchlist/toggle', [FavoriteController::class, 'toggle'])
+        ->name('watchlist.toggle');
 
     // Admin Panel Routes
     Route::middleware('admin')->group(function () {
         Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
         Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
+        Route::post('/admin/users', [AdminController::class, 'storeUser'])->name('admin.users.store');
         Route::put('/admin/users/{id}', [AdminController::class, 'updateUser'])->name('admin.users.update');
         Route::delete('/admin/users/{id}', [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
 

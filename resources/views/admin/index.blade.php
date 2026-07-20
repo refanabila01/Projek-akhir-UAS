@@ -131,35 +131,35 @@
         
         <!-- Total Users -->
         <a href="{{ route('admin.users') }}" class="stat-mini-card text-decoration-none">
-            <div class="label">Total Users</div>
+            <div class="label">Total Pengguna</div>
             <div class="value">{{ $userCount }}</div>
             <div class="sub">▲ +12 bulan ini</div>
         </a>
 
         <!-- Total Countries -->
         <div class="stat-mini-card">
-            <div class="label">Total Countries</div>
+            <div class="label">Total Negara</div>
             <div class="value">{{ $countryCount }}</div>
             <div class="sub text-muted">Negara Berdaulat</div>
         </div>
 
         <!-- Total Ports -->
         <a href="{{ route('admin.ports') }}" class="stat-mini-card text-decoration-none">
-            <div class="label">Total Ports</div>
+            <div class="label">Total Pelabuhan</div>
             <div class="value">{{ number_format($portCount) }}</div>
             <div class="sub text-muted">Pelabuhan Utama</div>
         </a>
 
         <!-- Total Articles -->
         <a href="{{ route('admin.articles') }}" class="stat-mini-card text-decoration-none">
-            <div class="label">Total Articles</div>
+            <div class="label">Total Artikel</div>
             <div class="value">{{ $newsCount }}</div>
             <div class="sub text-muted">Berita Rantai Pasok</div>
         </a>
 
         <!-- API Calls Today -->
         <div class="stat-mini-card">
-            <div class="label">API Calls Today</div>
+            <div class="label">Panggilan API Hari Ini</div>
             <div class="value">12.458</div>
             <div class="sub">▲ Kuota Aman</div>
         </div>
@@ -173,7 +173,7 @@
         <div class="col-lg-5">
             <div class="dashboard-section">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="fw-bold text-dark" style="font-size: 14px;">User Management</span>
+                    <span class="fw-bold text-dark" style="font-size: 14px;">Manajemen Pengguna</span>
                     <a href="{{ route('admin.users') }}" class="text-primary small fw-semibold" style="text-decoration:none;">Kelola Semua →</a>
                 </div>
                 <div class="table-responsive">
@@ -217,7 +217,7 @@
         <div class="col-lg-3">
             <div class="dashboard-section">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="fw-bold text-dark" style="font-size: 14px;">Recent Articles</span>
+                    <span class="fw-bold text-dark" style="font-size: 14px;">Artikel Terbaru</span>
                     <a href="{{ route('admin.articles') }}" class="text-primary small fw-semibold" style="text-decoration:none;">Lihat Semua</a>
                 </div>
                 
@@ -239,7 +239,7 @@
         <!-- Widget 3: API Usage -->
         <div class="col-lg-4">
             <div class="dashboard-section d-flex flex-column align-items-center">
-                <span class="fw-bold text-dark align-self-start mb-2" style="font-size: 14px;">API Usage</span>
+                <span class="fw-bold text-dark align-self-start mb-2" style="font-size: 14px;">Penggunaan API</span>
                 
                 {{-- Doughnut Chart --}}
                 <div style="position:relative; width:150px; height:150px; margin:10px auto;">

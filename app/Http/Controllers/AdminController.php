@@ -16,12 +16,29 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
+        // Seed mock users dynamically if they do not exist
+        $mocks = [
+            ['name' => 'Refa Nabila', 'email' => 'refa@gmail.com', 'role' => 'user'],
+            ['name' => 'Dimas Pratama', 'email' => 'dimas@gmail.com', 'role' => 'user'],
+            ['name' => 'Anisa Rahma', 'email' => 'anisa@gmail.com', 'role' => 'user'],
+        ];
+        foreach ($mocks as $m) {
+            if (!User::where('email', $m['email'])->exists()) {
+                User::create([
+                    'name' => $m['name'],
+                    'email' => $m['email'],
+                    'password' => bcrypt('password123'),
+                    'role' => $m['role'],
+                ]);
+            }
+        }
+
         $userCount = User::count();
         $portCount = Port::count();
         $newsCount = News::count();
         $countryCount = Country::count();
 
-        // Get users list matching user screenshot layout
+        // Get users list matching user database
         $dbUsers = User::all();
         $usersList = [];
         foreach ($dbUsers as $u) {
@@ -32,27 +49,6 @@ class AdminController extends Controller
                 'role' => $u->role === 'admin' ? 'Admin' : 'Analis',
                 'status' => 'Aktif',
             ];
-        }
-
-        // Fill up layout with mock items if less than 4 users
-        $mocks = [
-            ['name' => 'Refa Nabila', 'email' => 'refa@gmail.com', 'role' => 'Analis', 'status' => 'Aktif'],
-            ['name' => 'Dimas Pratama', 'email' => 'dimas@gmail.com', 'role' => 'Editor', 'status' => 'Aktif'],
-            ['name' => 'Anisa Rahma', 'email' => 'anisa@gmail.com', 'role' => 'Viewer', 'status' => 'Nonaktif'],
-        ];
-
-        foreach ($mocks as $m) {
-            if (count($usersList) >= 4) break;
-            // Avoid duplicate emails
-            if (collect($usersList)->where('email', $m['email'])->isEmpty()) {
-                $usersList[] = [
-                    'id' => count($usersList) + 1,
-                    'name' => $m['name'],
-                    'email' => $m['email'],
-                    'role' => $m['role'],
-                    'status' => $m['status'],
-                ];
-            }
         }
 
         // Get recent articles
@@ -71,6 +67,28 @@ class AdminController extends Controller
     {
         $users = User::all();
         return view('admin.users', compact('users'));
+    }
+
+    /**
+     * Store new user.
+     */
+    public function storeUser(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8',
+            'role' => 'required|in:admin,user',
+        ]);
+
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'role' => $request->role,
+        ]);
+
+        return redirect()->back()->with('success', 'User berhasil ditambahkan.');
     }
 
     /**

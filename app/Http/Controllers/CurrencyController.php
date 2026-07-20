@@ -17,7 +17,7 @@ class CurrencyController extends Controller
         // Simulated live rates vs USD (based on real approximate values)
         // Client-side JS will fetch live data from exchangerate.host after page loads
         $knownRates = [
-            'IDR' => 16250,  'CNY' => 7.25,   'EUR' => 0.92,  'SGD' => 1.34,
+            'IDR' => 17944,  'CNY' => 7.25,   'EUR' => 0.92,  'SGD' => 1.34,
             'JPY' => 155.0,  'RUB' => 90.0,   'AUD' => 1.52,  'GBP' => 0.78,
             'INR' => 83.5,   'BRL' => 5.05,   'CAD' => 1.36,  'MXN' => 17.2,
             'KRW' => 1340.0, 'SAR' => 3.75,   'AED' => 3.67,  'TRY' => 32.5,
